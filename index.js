@@ -40,8 +40,12 @@ const getGeo = () => {
         cityName.textContent = userInput;
         })
 };
+        //function to convert kelvin to farenheit
+        const kelvinToFarenheit = (kelvin) => {
+            return Math.round((kelvin - 273.15) * 1.8 + 32);
+        };
     
-        //uses data from geocoding for fetch request to open weather api
+        //uses data from geocoding for fetch request to open weather api and sets attributes of DOM to recieved information
         const getWeather = async () => {
             try {
               const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${openweatherKey}`);
@@ -52,6 +56,10 @@ const getGeo = () => {
 
               currentDate.textContent = data.list[0].dt_txt;
               currentIcon.setAttribute('src', `http://openweathermap.org/img/w/${iconCode}.png`);
+              currentIcon.style.display = 'block';
+              currentTemp.textContent = kelvinToFarenheit(data.list[0].main.temp) + '\u00B0';
+              currentHumidity.textContent ="Humidity: " + data.list[0].main.humidity + '%';
+              currentWind.textContent = "Wind speed: " + data.list[0].wind.speed + ' mph';
 
             } catch (error) {
               console.log(error);
