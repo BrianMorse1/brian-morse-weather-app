@@ -25,6 +25,9 @@ let currentWind = document.querySelector('#current-wind');
 let lat;
 let long;
 
+//variable for storing current weather icon code provided by weather api
+let iconCode;
+
 const getGeo = () => {
     const userInput = searchElement.value;
 
@@ -34,6 +37,7 @@ const getGeo = () => {
     .then(data => { 
         lat = data.results[0].locations[0].latLng.lat;
         long = data.results[0].locations[0].latLng.lng;
+        cityName.textContent = userInput;
         })
 };
     
@@ -42,7 +46,13 @@ const getGeo = () => {
             try {
               const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${openweatherKey}`);
               const data = await response.json();
-              console.log(data.list[0].main.temp);
+              iconCode = data.list[0].weather[0].icon;
+              console.log(data.list[0].weather[0].icon);
+
+
+              currentDate.textContent = data.list[0].dt_txt;
+              currentIcon.setAttribute('src', `http://openweathermap.org/img/w/${iconCode}.png`);
+
             } catch (error) {
               console.log(error);
             }
