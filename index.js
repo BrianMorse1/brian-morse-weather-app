@@ -1,5 +1,35 @@
-//requiring dotenv file for key security.
-//require('dotenv').config();
+//user input declared outside of local scope to be used in multiple functions
+let userInput;
+
+//function to check if there are past searches in history. if not, create empty array
+const checkStorage = () => {
+  if (localStorage.getItem("weatherSearchHistory") === null) {
+    localStorage.setItem("weatherSearchHistory", JSON.stringify([]));
+}};
+
+//variables representing search history and display area
+const searchHistory = JSON.parse(localStorage.getItem("weatherSearchHistory"));
+const searchHistoryDisplay = document.querySelector("#past-searches");
+
+//function to obtain past searches and display them in the search area
+const displayPastSearches = () => {
+  for(let i = 1; i < searchHistory.length; i++){
+  const pastSearch = document.createTextNode(searchHistory[i]);
+  searchHistoryDisplay.appendChild(pastSearch);
+  }
+}
+
+//runs the checkStorage function on page load
+document.addEventListener("DOMContentLoaded", () => {
+  checkStorage();
+  displayPastSearches();
+});
+
+//function to add use input to local storage
+const addToStorage = () => {
+  searchHistory.push(userInput);
+  localStorage.setItem("weatherSearchHistory", JSON.stringify(searchHistory));
+  };
 
 //keys for mapquest (geocoding) and openweather api's. 
 const mapquestKey = 'jyim88NKRLxKX4nc7UXSUsDTb138aGkk';
@@ -10,6 +40,7 @@ const searchElement = document.querySelector('#search-input');
 const submit = document.querySelector('#submit');
 
 //variables for DOM elements to be populated with information
+let resultDiv = document.querySelector('#display-results');
 let forecast = document.querySelector('#five-day');
 let pastSearches = document.querySelector('#past-searches');
 let cityName = document.querySelector('#city-name');
@@ -24,9 +55,6 @@ let forecast3 = document.querySelector('#forecast-card-3');
 let forecast4 = document.querySelector('#forecast-card-4');
 let forecast5 = document.querySelector('#forecast-card-5');
 
-
-
-
 //variables for setting lat and long of user searches
 let lat;
 let long;
@@ -35,7 +63,7 @@ let long;
 let iconCode;
 
 const getGeo = () => {
-    const userInput = searchElement.value;
+    userInput = searchElement.value;
 
     //fetch's geocoding data from Mapquestapi
     return fetch(`https://www.mapquestapi.com/geocoding/v1/address?key=${mapquestKey}&location=${userInput}`)
@@ -45,6 +73,7 @@ const getGeo = () => {
         long = data.results[0].locations[0].latLng.lng;
         cityName.textContent = userInput;
         })
+    .then(addToStorage(userInput));
 };
         //function to convert kelvin to farenheit
         const kelvinToFarenheit = (kelvin) => {
@@ -53,7 +82,7 @@ const getGeo = () => {
     
         //uses data from geocoding for fetch request to open weather api and sets attributes of DOM to recieved information
         const getWeather = async () => {
-            
+              resultDiv.textContent = '';
               const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${openweatherKey}`);
               const data = await response.json();
               iconCode = data.list[0].weather[0].icon;
@@ -85,13 +114,12 @@ const getGeo = () => {
               forecast4.innerHTML = date4 + '<br>' + kelvinToFarenheit(data.list[32].main.temp) + '\u00B0' + "<br>" + "Wind speed: " + data.list[32].wind.speed + ' mph' + "<br>" + "Humidity: " + data.list[0].main.humidity + '%';
 
               const dateTime5 = data.list[39].dt_txt;
-              const date5 = dateTime1.split(' ')[0]
+              const date5 = dateTime5.split(' ')[0]
               forecast5.innerHTML = date5 + '<br>' + kelvinToFarenheit(data.list[39].main.temp) + '\u00B0' + "<br>" + "Wind speed: " + data.list[39].wind.speed + ' mph' + "<br>" + "Humidity: " + data.list[0].main.humidity + '%';
-
-
-
             };
     
+            //code to store past searches in local storage
+
 
    
     
