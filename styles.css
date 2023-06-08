@@ -1,0 +1,66 @@
+header {
+    background-color: #F4b6c2;
+    height: 100px;
+    text-align: center;
+    padding-top: 7px;
+    width: 100%;
+}
+
+body {
+    background-color: #b8d8d8;
+    color: #696969;
+}
+
+form {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#search-input {
+    width: 10%;
+    height: 25px;
+    border-radius: 5px;
+}
+
+#submit {
+    height: 30px;
+    background-color: #98d6ae;
+    border-radius: 5px;
+}
+
+#display-results {
+    border-style: solid;
+    border-width: .5px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #B0CFFC;
+    text-align: center;
+    display: flex;
+    margin: 20px;    
+}
+
+#forecast-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+#forecast-card-1, #forecast-card-2, #forecast-card-3, 
+#forecast-card-4, #forecast-card-5 {
+    border-style: solid;
+    border-width: .25px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    width: 10%;
+    background-color: #98d6ae;
+    border-style:groove;
+    border-color: black;
+    margin: 3%;
+} 
+
+

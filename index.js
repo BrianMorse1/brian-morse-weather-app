@@ -82,7 +82,6 @@ const getGeo = () => {
     
         //uses data from geocoding for fetch request to open weather api and sets attributes of DOM to recieved information
         const getWeather = async () => {
-              resultDiv.textContent = '';
               const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${openweatherKey}`);
               const data = await response.json();
               iconCode = data.list[0].weather[0].icon;
@@ -117,14 +116,7 @@ const getGeo = () => {
               const date5 = dateTime5.split(' ')[0]
               forecast5.innerHTML = date5 + '<br>' + kelvinToFarenheit(data.list[39].main.temp) + '\u00B0' + "<br>" + "Wind speed: " + data.list[39].wind.speed + ' mph' + "<br>" + "Humidity: " + data.list[0].main.humidity + '%';
             };
-    
-            //code to store past searches in local storage
-
-
-   
-    
-
-
+     
     //function to call both previous functions
     const formHandler = async (event) =>{
         event.preventDefault();
